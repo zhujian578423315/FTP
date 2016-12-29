@@ -1,0 +1,376 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EE8A52691DED154900C9EF63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8A52681DED154900C9EF63 /* AppDelegate.swift */; };
+		EE8A526B1DED154900C9EF63 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8A526A1DED154900C9EF63 /* ViewController.swift */; };
+		EE8A526E1DED154900C9EF63 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE8A526C1DED154900C9EF63 /* Main.storyboard */; };
+		EE8A52711DED154900C9EF63 /* FTP.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EE8A526F1DED154900C9EF63 /* FTP.xcdatamodeld */; };
+		EE8A52731DED154900C9EF63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE8A52721DED154900C9EF63 /* Assets.xcassets */; };
+		EE8A52761DED154900C9EF63 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE8A52741DED154900C9EF63 /* LaunchScreen.storyboard */; };
+		EE92734B1E11614500E80BAD /* SortModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE92734A1E11614500E80BAD /* SortModel.swift */; };
+		EED6955B1E027C3F00D98319 /* FTPModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED6955A1E027C3F00D98319 /* FTPModel.swift */; };
+		EED6957E1E0B6AB200D98319 /* DataStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED6957D1E0B6AB200D98319 /* DataStream.swift */; };
+		EED695801E0B6C8B00D98319 /* StreamCreate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED6957F1E0B6C8B00D98319 /* StreamCreate.swift */; };
+		EED695821E0B6E3C00D98319 /* ControllerStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED695811E0B6E3C00D98319 /* ControllerStream.swift */; };
+		EED695871E0BB0E800D98319 /* ListStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED695861E0BB0E800D98319 /* ListStream.swift */; };
+		EED695891E0CEEBA00D98319 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED695881E0CEEBA00D98319 /* TableViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		EE8A52651DED154900C9EF63 /* FTP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FTP.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE8A52681DED154900C9EF63 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EE8A526A1DED154900C9EF63 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EE8A526D1DED154900C9EF63 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EE8A52701DED154900C9EF63 /* FTP.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FTP.xcdatamodel; sourceTree = "<group>"; };
+		EE8A52721DED154900C9EF63 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EE8A52751DED154900C9EF63 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EE8A52771DED154900C9EF63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EE92734A1E11614500E80BAD /* SortModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortModel.swift; sourceTree = "<group>"; };
+		EED6955A1E027C3F00D98319 /* FTPModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTPModel.swift; sourceTree = SOURCE_ROOT; };
+		EED6957D1E0B6AB200D98319 /* DataStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStream.swift; sourceTree = "<group>"; };
+		EED6957F1E0B6C8B00D98319 /* StreamCreate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamCreate.swift; sourceTree = "<group>"; };
+		EED695811E0B6E3C00D98319 /* ControllerStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerStream.swift; sourceTree = "<group>"; };
+		EED695861E0BB0E800D98319 /* ListStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListStream.swift; sourceTree = "<group>"; };
+		EED695881E0CEEBA00D98319 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EE8A52621DED154900C9EF63 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EE8A525C1DED154900C9EF63 = {
+			isa = PBXGroup;
+			children = (
+				EE8A52671DED154900C9EF63 /* FTP */,
+				EE8A52661DED154900C9EF63 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EE8A52661DED154900C9EF63 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE8A52651DED154900C9EF63 /* FTP.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE8A52671DED154900C9EF63 /* FTP */ = {
+			isa = PBXGroup;
+			children = (
+				EE8A526A1DED154900C9EF63 /* ViewController.swift */,
+				EED695881E0CEEBA00D98319 /* TableViewController.swift */,
+				EE92734A1E11614500E80BAD /* SortModel.swift */,
+				EE8A526C1DED154900C9EF63 /* Main.storyboard */,
+				EED695831E0B6FD600D98319 /* FTP Model */,
+				EED6958A1E0CEECD00D98319 /* Supporting */,
+			);
+			path = FTP;
+			sourceTree = "<group>";
+		};
+		EED695831E0B6FD600D98319 /* FTP Model */ = {
+			isa = PBXGroup;
+			children = (
+				EED6955A1E027C3F00D98319 /* FTPModel.swift */,
+				EED6957F1E0B6C8B00D98319 /* StreamCreate.swift */,
+				EED695811E0B6E3C00D98319 /* ControllerStream.swift */,
+				EED6957D1E0B6AB200D98319 /* DataStream.swift */,
+				EED695861E0BB0E800D98319 /* ListStream.swift */,
+			);
+			name = "FTP Model";
+			sourceTree = "<group>";
+		};
+		EED6958A1E0CEECD00D98319 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				EE8A52681DED154900C9EF63 /* AppDelegate.swift */,
+				EE8A52721DED154900C9EF63 /* Assets.xcassets */,
+				EE8A52741DED154900C9EF63 /* LaunchScreen.storyboard */,
+				EE8A52771DED154900C9EF63 /* Info.plist */,
+				EE8A526F1DED154900C9EF63 /* FTP.xcdatamodeld */,
+			);
+			name = Supporting;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EE8A52641DED154900C9EF63 /* FTP */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE8A527A1DED154900C9EF63 /* Build configuration list for PBXNativeTarget "FTP" */;
+			buildPhases = (
+				EE8A52611DED154900C9EF63 /* Sources */,
+				EE8A52621DED154900C9EF63 /* Frameworks */,
+				EE8A52631DED154900C9EF63 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FTP;
+			productName = FTP;
+			productReference = EE8A52651DED154900C9EF63 /* FTP.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EE8A525D1DED154900C9EF63 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0810;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = seewo;
+				TargetAttributes = {
+					EE8A52641DED154900C9EF63 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = S2844J3VK9;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = EE8A52601DED154900C9EF63 /* Build configuration list for PBXProject "FTP" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EE8A525C1DED154900C9EF63;
+			productRefGroup = EE8A52661DED154900C9EF63 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EE8A52641DED154900C9EF63 /* FTP */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EE8A52631DED154900C9EF63 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE8A52761DED154900C9EF63 /* LaunchScreen.storyboard in Resources */,
+				EE8A52731DED154900C9EF63 /* Assets.xcassets in Resources */,
+				EE8A526E1DED154900C9EF63 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EE8A52611DED154900C9EF63 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EED6955B1E027C3F00D98319 /* FTPModel.swift in Sources */,
+				EED695801E0B6C8B00D98319 /* StreamCreate.swift in Sources */,
+				EE8A526B1DED154900C9EF63 /* ViewController.swift in Sources */,
+				EE92734B1E11614500E80BAD /* SortModel.swift in Sources */,
+				EED695871E0BB0E800D98319 /* ListStream.swift in Sources */,
+				EED6957E1E0B6AB200D98319 /* DataStream.swift in Sources */,
+				EE8A52711DED154900C9EF63 /* FTP.xcdatamodeld in Sources */,
+				EED695821E0B6E3C00D98319 /* ControllerStream.swift in Sources */,
+				EED695891E0CEEBA00D98319 /* TableViewController.swift in Sources */,
+				EE8A52691DED154900C9EF63 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		EE8A526C1DED154900C9EF63 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EE8A526D1DED154900C9EF63 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		EE8A52741DED154900C9EF63 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EE8A52751DED154900C9EF63 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EE8A52781DED154900C9EF63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EE8A52791DED154900C9EF63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EE8A527B1DED154900C9EF63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = S2844J3VK9;
+				INFOPLIST_FILE = FTP/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = seewo.com.cn.FTP;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		EE8A527C1DED154900C9EF63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = S2844J3VK9;
+				INFOPLIST_FILE = FTP/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = seewo.com.cn.FTP;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EE8A52601DED154900C9EF63 /* Build configuration list for PBXProject "FTP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE8A52781DED154900C9EF63 /* Debug */,
+				EE8A52791DED154900C9EF63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EE8A527A1DED154900C9EF63 /* Build configuration list for PBXNativeTarget "FTP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE8A527B1DED154900C9EF63 /* Debug */,
+				EE8A527C1DED154900C9EF63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		EE8A526F1DED154900C9EF63 /* FTP.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EE8A52701DED154900C9EF63 /* FTP.xcdatamodel */,
+			);
+			currentVersion = EE8A52701DED154900C9EF63 /* FTP.xcdatamodel */;
+			path = FTP.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = EE8A525D1DED154900C9EF63 /* Project object */;
+}
