@@ -9,18 +9,7 @@
 import UIKit
 
 class TableViewController: UITableViewController,loginDelegate {
-    internal var Port: UInt32 = 0
 
-    internal var ipAddress: CFString = "" as CFString
-
-    internal var username: String = ""
-    internal var password: String = ""
-
-
-    
-    
-    
-    
     
     @IBAction func Back(_ sender: UIBarButtonItem) {
         ftp.Back()
@@ -30,15 +19,12 @@ class TableViewController: UITableViewController,loginDelegate {
         
     }
     
-    var ftp = FTPModel()
+    var ftp = FTPModel.init(ip: "192.168.2.8" as CFString, port: 21, username: "zhujian", password: "zaq12wsx")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ftp.delegate = self
-        
-        ipAddress = ("192.168.2.8" as CFString?)!
-                Port = 21
-        username = "zhujian"
-        password = "zaq12wsx"
+
         
         ftp.login()
         

@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     
     func getDataSucess() {
         let tvc = storyboard?.instantiateViewController(withIdentifier: "123") as! TableViewController
-        tvc.ftp = self.ftp
+//        tvc.ftp = self.ftp
         
         self.navigationController?.pushViewController(tvc, animated: true)
     }
@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     
     @IBAction func play(_ sender: UIButton) {
 
-        ftp.DownloadFile(path:"/to be",name: "半城烟沙.mp3")
+//        ftp.DownloadFile(path:"/to be",name: "半城烟沙.mp3")
         
     }
     
@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     
     @IBOutlet var command: UITextField!
     
-    let ftp = FTPModel()
+//    let ftp = FTPModel()
     
 
     let ip = "192.168.2.8"
@@ -60,10 +60,10 @@ class ViewController: UIViewController {
         switch event!.subtype {
         case .remoteControlPlay:  // play按钮
             print("play")
-            ftp.a?.play()
+//            ftp.a?.play()
         case .remoteControlPause:  // pause按钮
             print("pause")
-            ftp.a?.pause()
+//            ftp.a?.pause()
         case .remoteControlNextTrack:  // next
             // ▶▶
             break

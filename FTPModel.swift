@@ -10,11 +10,6 @@ import Foundation
 import AVFoundation
 
 protocol loginDelegate {
-    //    func LoginInformation()
-    var username:String{get set}
-    var password:String{get set}
-    var ipAddress:CFString{get set}
-    var Port:UInt32{get set}
     func getDataSucess()
 }
 
@@ -29,6 +24,11 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
     let  sortBrain = SortModel()
     
     var delegate:loginDelegate?
+    
+    var username:String
+    var password:String
+    var ipAddress:CFString
+    var Port:UInt32
     
     var file:String?
     
@@ -46,13 +46,23 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
         }
     }
     
+    
+    
+    init(ip:CFString,port:UInt32,username:String,password:String) {
+        self.ipAddress = ip
+        self.Port = port
+        self.username = username
+        self.password = password
+    }
+    
+    
     func login()  {
         controllerStream.delegate = self
         listStream.delegate = self
         dataStream.delegate = self
         if delegate != nil{
-            controllerStream.connect(serverAddress: (delegate?.ipAddress)!, serverPort: (delegate?.Port)!)
-            commands = ["USER "+(delegate?.username ?? ""),"PASS "+(delegate?.password ?? ""),"OPTS UTF8 ON","PASV","LIST"]
+            controllerStream.connect(serverAddress: ipAddress, serverPort: Port)
+            commands = ["USER "+username,"PASS "+password,"OPTS UTF8 ON","PASV","LIST"]
         }
         
         
@@ -61,8 +71,8 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
     func needLogin() {
         print("需要重新登录")
         if delegate != nil{
-            controllerStream.connect(serverAddress: (delegate?.ipAddress)!, serverPort: (delegate?.Port)!)
-            var x = ["USER "+(delegate?.username ?? ""),"PASS "+(delegate?.password ?? ""),"OPTS UTF8 ON"]
+            controllerStream.connect(serverAddress: ipAddress, serverPort: Port)
+            var x = ["USER "+username,"PASS "+password,"OPTS UTF8 ON"]
             x += commands
             commands = x
         }
@@ -70,13 +80,13 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
     }
 
     //建立数据链接
-    private  func DataStreamConnect(port: UInt32) {
+    private  func DataStreamConnect(dataPort: UInt32) {
         
         if delegate != nil{
             if isMessage{
-                listStream.connect(serverAddress: (delegate?.ipAddress)!, serverPort: port)
+                listStream.connect(serverAddress: ipAddress, serverPort: dataPort)
             }else{
-                dataStream.connect(serverAddress: (delegate?.ipAddress)!, serverPort: port)
+                dataStream.connect(serverAddress: ipAddress, serverPort: dataPort)
             }
             //ftp无法拥有两个数据端口，所以下载数据时不能查看文件目录。否则会下载失败
         }
@@ -95,9 +105,9 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
                 if  xdivide.count > 2 {
                     let xdivide1 = UInt32(xdivide[xdivide.count - 2]) ?? 0
                     let xdivide2 = UInt32(xdivide[xdivide.count - 1].components(separatedBy: ")")[0]) ?? 0
-                    let port = xdivide1*256+xdivide2
-                    print("成功获取到数据端口号："+String(port))
-                    DataStreamConnect(port: port)
+                    let dport = xdivide1*256+xdivide2
+                    print("成功获取到数据端口号："+String(dport))
+                    DataStreamConnect(dataPort: dport)
                 }
             case 257:
                 let x = message.components(separatedBy: "\"")
