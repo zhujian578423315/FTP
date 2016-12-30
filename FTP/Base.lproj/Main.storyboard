@@ -86,7 +86,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="19v-tE-wgL" id="jW1-dl-dK0">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -102,21 +102,19 @@
                                 <action selector="Back:" destination="fvU-Gl-Z6G" id="awo-hJ-SFh"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="oD5-Ke-k4t">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HQf-ZR-dNY">
-                                <rect key="frame" x="276" y="7" width="83" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Online"/>
-                            </button>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="oD5-Ke-k4t">
                             <connections>
-                                <action selector="Online:" destination="fvU-Gl-Z6G" id="DsO-22-vi7"/>
+                                <action selector="home:" destination="fvU-Gl-Z6G" id="hbt-M4-fPP"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="ishome" destination="oD5-Ke-k4t" id="Irr-fh-jVz"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q20-yI-ENF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2516" y="28.335832083958024"/>
+            <point key="canvasLocation" x="2593" y="9"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="o5L-E2-BAQ">

@@ -56,6 +56,7 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
     }
     
     
+    
     func login()  {
         controllerStream.delegate = self
         listStream.delegate = self

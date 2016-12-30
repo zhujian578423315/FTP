@@ -10,15 +10,29 @@ import UIKit
 
 class TableViewController: UITableViewController,loginDelegate {
 
-    
+    var homeOrNot = false
     @IBAction func Back(_ sender: UIBarButtonItem) {
         ftp.Back()
     }
-    @IBAction func Online(_ sender: Any) {
-        ftp.login()
-        
+    @IBAction func home(_ sender: UIBarButtonItem) {
+        if !homeOrNot {
+            ftp.ipAddress = "192.168.1.112" as CFString
+            ftp.fileAndDictionary = nil
+            self.navigationItem.title = "Company"
+            ftp.login()
+            homeOrNot = true
+        }else{
+            ftp.ipAddress = "192.168.2.8" as CFString
+            ftp.fileAndDictionary = nil
+            self.navigationItem.title = "Home"
+            ftp.login()
+            homeOrNot = false
+        }
     }
     
+    @IBOutlet var ishome: UIBarButtonItem!
+
+   
     var ftp = FTPModel.init(ip: "192.168.2.8" as CFString, port: 21, username: "zhujian", password: "zaq12wsx")
     
     override func viewDidLoad() {
