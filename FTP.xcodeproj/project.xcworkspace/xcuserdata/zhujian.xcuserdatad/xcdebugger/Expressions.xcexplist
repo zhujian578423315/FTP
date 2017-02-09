@@ -14,7 +14,63 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "static AudioPlay.(HandleOutputBuffer).(variable initialization expression).(closure #1):AudioPlay.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "aqData">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "streamAudio.(MyPacketsProc).(variable initialization expression).(closure #1):streamAudio.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "myData.pointee">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "streamAudio.(MyPropertyListenerProc).(variable initialization expression).(closure #1):streamAudio.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "myData.pointee">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "FTPModel.handleWithControllerStreamMessage(message : String) -&gt; ():FTPModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "isMessage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "streamAudio.mainStart(bytesRecvd : Int, buf : [UInt8]) -&gt; ():streamAudio.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "myData.pointee">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static streamAudio.MyEnqueueBuffer(UnsafeMutablePointer&lt;streamAudio.MyData&gt;) -&gt; Int32:streamAudio.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "myData.pointee">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "FTPModel.playSong() -&gt; ():FTPModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "a">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "FTPModel.addData(data : Data) -&gt; ():FTPModel.swift">
          <PersistentStrings>
             <PersistentString
                value = "a">

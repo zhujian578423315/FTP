@@ -16,7 +16,8 @@ class TableViewController: UITableViewController,loginDelegate {
     }
     @IBAction func home(_ sender: UIBarButtonItem) {
         if !homeOrNot {
-            ftp.ipAddress = "192.168.1.112" as CFString
+            ftp.ipAddress = "115.159.28.44" as CFString
+            ftp.Port = 21
             ftp.fileAndDictionary = nil
             self.navigationItem.title = "Company"
             ftp.login()
@@ -71,10 +72,7 @@ class TableViewController: UITableViewController,loginDelegate {
         cell.textLabel?.backgroundColor = UIColor.white
         
         //        var fileAndDictionary = ftp.fileAndDictionary
-        
-        
-        
-        
+
         if ftp.fileAndDictionary != nil{
             cell.textLabel?.text = ftp.fileAndDictionary?[indexPath.row][8]
             cell.textLabel?.adjustsFontSizeToFitWidth = true
@@ -88,7 +86,13 @@ class TableViewController: UITableViewController,loginDelegate {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+//        if ftp.x.myData.started{
+//            print(ftp.x.myData.started)
+//        let q = DispatchQueue.init(label: "1")
+//        q.async {
+//            self.ftp.x.stop()
+//        }
+//        }
         if ftp.fileAndDictionary != nil{
             if ftp.fileAndDictionary![indexPath.row][0].contains("d"){
                 ftp.ListFile(path: ftp.fileAndDictionary![indexPath.row][8])
@@ -103,22 +107,22 @@ class TableViewController: UITableViewController,loginDelegate {
         return 60
     }
     
-    override func remoteControlReceived(with event: UIEvent?) {
-        switch event!.subtype {
-        case .remoteControlPlay:  // play按钮
-            print("play")
-            ftp.a?.play()
-        case .remoteControlPause:  // pause按钮
-            print("pause")
-            ftp.a?.pause()
-        case .remoteControlNextTrack:  // next
-            // ▶▶
-            break
-        case .remoteControlPreviousTrack:  // previous
-            // ◀◀
-            break
-        default:
-            break
-        }
-    }
+//    override func remoteControlReceived(with event: UIEvent?) {
+//        switch event!.subtype {
+//        case .remoteControlPlay:  // play按钮
+//            print("play")
+//            ftp.a?.play()
+//        case .remoteControlPause:  // pause按钮
+//            print("pause")
+//            ftp.a?.pause()
+//        case .remoteControlNextTrack:  // next
+//            // ▶▶
+//            break
+//        case .remoteControlPreviousTrack:  // previous
+//            // ◀◀
+//            break
+//        default:
+//            break
+//        }
+//    }
 }

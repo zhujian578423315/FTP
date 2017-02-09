@@ -31,10 +31,10 @@ class ListStream:StreamCreate {
     
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
-        case Stream.Event.openCompleted:
-            print(aStream.description+"列表流打开成功")
+//        case Stream.Event.openCompleted:
+//            print(aStream.description+"列表流打开成功")
         case Stream.Event.hasBytesAvailable:
-            print("列表流检测到有待接收数据！！")
+//            print("列表流检测到有待接收数据！！")
             
             if  let inputStream = aStream as? InputStream {
                 
@@ -61,17 +61,16 @@ class ListStream:StreamCreate {
                     }   
                 }
             }
-        case Stream.Event.hasSpaceAvailable:
-            print("列表流有可写空间")
-        case Stream.Event.errorOccurred:
-            print("列表流遇到错误")
-            print(aStream.streamError?.localizedDescription ?? "unknow error")
-        case Stream.Event.endEncountered:
-            aStream.close()
-            aStream.remove(from: .current, forMode: .defaultRunLoopMode)
-            print("列表流结束")
-        default:
-            print("default")
+//        case Stream.Event.hasSpaceAvailable:
+//            print("列表流有可写空间")
+//        case Stream.Event.errorOccurred:
+//            print("列表流遇到错误")
+//            print(aStream.streamError?.localizedDescription ?? "unknow error")
+//        case Stream.Event.endEncountered:
+//            aStream.close()
+//            aStream.remove(from: .current, forMode: .defaultRunLoopMode)
+//            print("列表流结束")
+            default:break
         }
         
     }

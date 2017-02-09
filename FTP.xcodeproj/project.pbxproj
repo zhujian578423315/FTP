@@ -13,6 +13,7 @@
 		EE8A52711DED154900C9EF63 /* FTP.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EE8A526F1DED154900C9EF63 /* FTP.xcdatamodeld */; };
 		EE8A52731DED154900C9EF63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE8A52721DED154900C9EF63 /* Assets.xcassets */; };
 		EE8A52761DED154900C9EF63 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE8A52741DED154900C9EF63 /* LaunchScreen.storyboard */; };
+		EE8A80571E4AE604001FC1D8 /* streamAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8A80561E4AE604001FC1D8 /* streamAudio.swift */; };
 		EE92734B1E11614500E80BAD /* SortModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE92734A1E11614500E80BAD /* SortModel.swift */; };
 		EED6955B1E027C3F00D98319 /* FTPModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED6955A1E027C3F00D98319 /* FTPModel.swift */; };
 		EED6957E1E0B6AB200D98319 /* DataStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED6957D1E0B6AB200D98319 /* DataStream.swift */; };
@@ -31,6 +32,7 @@
 		EE8A52721DED154900C9EF63 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EE8A52751DED154900C9EF63 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EE8A52771DED154900C9EF63 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EE8A80561E4AE604001FC1D8 /* streamAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = streamAudio.swift; sourceTree = "<group>"; };
 		EE92734A1E11614500E80BAD /* SortModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortModel.swift; sourceTree = "<group>"; };
 		EED6955A1E027C3F00D98319 /* FTPModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTPModel.swift; sourceTree = SOURCE_ROOT; };
 		EED6957D1E0B6AB200D98319 /* DataStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStream.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				EED695881E0CEEBA00D98319 /* TableViewController.swift */,
 				EE92734A1E11614500E80BAD /* SortModel.swift */,
 				EE8A526C1DED154900C9EF63 /* Main.storyboard */,
+				EE8A80561E4AE604001FC1D8 /* streamAudio.swift */,
 				EED695831E0B6FD600D98319 /* FTP Model */,
 				EED6958A1E0CEECD00D98319 /* Supporting */,
 			);
@@ -183,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EED6955B1E027C3F00D98319 /* FTPModel.swift in Sources */,
+				EE8A80571E4AE604001FC1D8 /* streamAudio.swift in Sources */,
 				EED695801E0B6C8B00D98319 /* StreamCreate.swift in Sources */,
 				EE8A526B1DED154900C9EF63 /* ViewController.swift in Sources */,
 				EE92734B1E11614500E80BAD /* SortModel.swift in Sources */,

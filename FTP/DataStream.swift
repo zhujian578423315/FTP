@@ -20,14 +20,17 @@ class DataStream:StreamCreate {
     
     
     var tempBuffer = [UInt8](repeating: 0, count: 0)
+    var tempData = Data()
+
+//    var queue1 = DispatchQueue.init(label: "1")
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
-        case Stream.Event.openCompleted:
-            print(aStream.description+"数据流打开成功")
+//        case Stream.Event.openCompleted:
+//            print(aStream.description+"数据流打开成功")
         case Stream.Event.hasBytesAvailable:
             
             if  let inputStream = aStream as? InputStream {
-                let bufferSize = 1024*8
+                let bufferSize = 40000
                 var buffer = [UInt8](repeating: 0, count: bufferSize)
                 while (inputStream.hasBytesAvailable){
                     //将接收到的内容放到buffer里面
@@ -44,17 +47,16 @@ class DataStream:StreamCreate {
                     }
                 }
             }
-        case Stream.Event.hasSpaceAvailable:
-            print("数据流有可写空间")
-        case Stream.Event.errorOccurred:
-            print("数据流遇到错误")
-            print(aStream.streamError?.localizedDescription ?? "unknow error")
-        case Stream.Event.endEncountered:
-            aStream.close()
-            aStream.remove(from: .current, forMode: .defaultRunLoopMode)
-            print("数据流结束")
-        default:
-            print("default")
+//        case Stream.Event.hasSpaceAvailable:
+//            print("数据流有可写空间")
+//        case Stream.Event.errorOccurred:
+//            print("数据流遇到错误")
+//            print(aStream.streamError?.localizedDescription ?? "unknow error")
+//        case Stream.Event.endEncountered:
+//            aStream.close()
+//            aStream.remove(from: .current, forMode: .defaultRunLoopMode)
+//            print("数据流结束")
+            default:break
         }
         
     }

@@ -13,7 +13,9 @@ protocol loginDelegate {
     func getDataSucess()
 }
 
-class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
+class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDalegate,AVAudioPlayerDelegate {
+    
+    
     
     var listStream = ListStream()
     
@@ -31,6 +33,7 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
     var Port:UInt32
     
     var file:String?
+    var file1:String?
     
     var isMessage = true
     
@@ -46,13 +49,12 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
         }
     }
     
-    
-    
     init(ip:CFString,port:UInt32,username:String,password:String) {
         self.ipAddress = ip
         self.Port = port
         self.username = username
         self.password = password
+        file  = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as String + "/m.Mp3"
     }
     
     
@@ -65,7 +67,7 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
             controllerStream.connect(serverAddress: ipAddress, serverPort: Port)
             commands = ["USER "+username,"PASS "+password,"OPTS UTF8 ON","PASV","LIST"]
         }
-        
+                isMessage = true
         
     }
     
@@ -77,17 +79,28 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
             x += commands
             commands = x
         }
-        
+                isMessage = true
     }
-
+    
+    let x = streamAudio()
+    let q = DispatchQueue.init(label: "q")
     //建立数据链接
     private  func DataStreamConnect(dataPort: UInt32) {
         
         if delegate != nil{
             if isMessage{
-                listStream.connect(serverAddress: ipAddress, serverPort: dataPort)
+//                print("接收列表")
+                self.listStream.connect(serverAddress: self.ipAddress, serverPort: dataPort)
             }else{
-                dataStream.connect(serverAddress: ipAddress, serverPort: dataPort)
+                // dataStream.connect(serverAddress: ipAddress, serverPort: dataPort)
+//                print("接收数据")
+                q.async {
+                    self.isMessage = true
+                    self.x.mainStart(ip: self.ipAddress as String, Port: dataPort)
+                //由于ftp只有一个数据端口，所以有一个对象占用时，其他的对象无法访问！！
+                }
+                
+                
             }
             //ftp无法拥有两个数据端口，所以下载数据时不能查看文件目录。否则会下载失败
         }
@@ -121,19 +134,23 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
         commandQueue()
     }
     
+    
+    
+    
     internal  func handleWithDataStreamFile(data: Data) {
-        file  = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as String + "/1.Mp3"
-        if   FileManager().createFile(atPath:file!, contents: data, attributes: nil){
-            
-            playSong()
-        }
+        
+        //
+        //        if   FileManager().createFile(atPath:file!, contents: data, attributes: nil){
+        //            playSong()
+        //        }
+        
         isMessage = true
     }
     
     internal   func handleWithListStreamMessage(message: String) {
         
         var strArr = message.components(separatedBy: "\r\n")
-        print(strArr.count)
+//        print(strArr.count)
         strArr.removeLast()
         //MLSD
         //        var xy = [[String]]()
@@ -177,7 +194,7 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
         }
         
         fileAndDictionary = sortBrain.compareChineseNumber(chineseNumberArray: xy)
-        print(fileAndDictionary ?? [])
+//        print(fileAndDictionary ?? [])
     }
     
     
@@ -211,6 +228,12 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
     
     func DownloadFile(path:String,name:String)  {
         //dataStream写入的时候不再发出命令
+                close(Int32(x.connection_socket))
+        let q = DispatchQueue.init(label: "1")
+                q.async {
+                self.x.stop()
+                }
+        
         if dataStream.inputStream?.streamStatus.rawValue != 2{
             let RETR = "RETR "+name
             let SIZE = "SIZE "+name
@@ -264,27 +287,33 @@ class FTPModel:controllerStreamDelegate,listStreamDelegate,dataStreamDalegate {
     
     
     
-    var a:AVAudioPlayer?
-    var songIsStart = false
-    func playSong()  {
-        if file != nil{
-            do  {
-                a = try AVAudioPlayer.init(contentsOf: URL.init(fileURLWithPath: file!))
-                
-            }
-            catch {
-                a = nil
-            }
-            if a != nil{
-                a!.play()
-                print(a!.duration/60)
-                print(a!.currentTime)
-            }
-            
-            songIsStart = true
-        }
-        
-    }
+//    var a:AVAudioPlayer?
+//    
+//    func playSong()  {
+//        if file != nil{
+//            do  {
+//                a = try AVAudioPlayer.init(contentsOf: URL.init(fileURLWithPath: file!))
+//                
+//            }
+//            catch {
+//                print("文件播放失败")
+//                a = nil
+//            }
+//            if a != nil{
+//                a!.play()
+//                print(a!.duration/60)
+//                print(a!.currentTime)
+//            }
+//        }
+//        
+//    }
+//    
+//    
+//    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+//        print(error)
+//    }
+    
+    
     
     
 }
