@@ -53,93 +53,24 @@ class streamAudio:StreamCreate {
         pthread_cond_init(&myData.cond, nil)
         pthread_cond_init(&myData.done, nil)
         
-        //        let q = DispatchQueue.init(label: "1")
         DispatchQueue.main.async {
             self.connect(serverAddress: self.defaultIp, serverPort: UInt32(self.defaultPort))
         }
-        
-        
-        //connect socket
-        //        let connection_socket = MyConnectSocket()
-        //        guard connection_socket > 0 else{
-        //            print("connectfaild")
-        //            return
-        //        }
-        //        print("connected")
         
         var err = AudioFileStreamOpen(&myData, MyPropertyListenerProc, MyPacketsProc,kAudioFileAAC_ADTSType, &myData.audioFileStream)
         guard err == 0 && myData.audioFileStream != nil else{
             print("AudioFileStreamOpenError")
             return
         }
-        
-        //            var buf = Array.init(repeating: Int8(), count: kRecvBufSize)
-        //        while !myData.failed {
-        //            print("receive")
-        //            let bytesRecvd = recv(Int32(connection_socket), &buf, kRecvBufSize, 0)
-        //            print("bytesRecvd:"+bytesRecvd.description)
-        //            guard bytesRecvd > 0 else{
-        //                print("RecvdComplete!")
-        //                break
-        //            }
-        //            let err = AudioFileStreamParseBytes(myData.audioFileStream!, UInt32(bytesRecvd), buf, AudioFileStreamParseFlags(rawValue: 0))
-        //            guard err == 0 else{
-        //                print("AudioFileStreamParseBytesError"+err.description)
-        //                break
-        //            }
-        
-        //        }
-        
-        
-        
-        
-        //        guard myData.started == true else{
-        //            return
-        //        }
-        //
-        //        err = streamAudio.MyEnqueueBuffer(&myData)
-        //
-        //        print("flushing")
-        //        err = AudioQueueFlush(myData.audioQueue!)
-        //        guard err == 0 else {
-        //            print("AudioQueueFlushError")
-        //            return
-        //        }
-        //
-        //        print("stopping")
-        //        err = AudioQueueStop(myData.audioQueue!, false)
-        //        guard err == 0 else {
-        //            print("AudioQueueStopError")
-        //            return
-        //        }
-        //
-        //        print("waiting until finished playing..")
-        //        pthread_mutex_lock(&myData.mutex)
-        //        pthread_cond_wait(&myData.done, &myData.mutex)
-        //        pthread_mutex_unlock(&myData.mutex)
-        //
-        //        err = AudioFileStreamClose(myData.audioFileStream!)
-        //        err = AudioQueueDispose(myData.audioQueue!, false)
-        //        close(Int32(connection_socket))
+    
     }
     
-    //    func streamDataReceive(inDataByteSize:UInt32,buf:[Int8])->Bool  {
-    //        print("receive")
-    //        let err = AudioFileStreamParseBytes(myData.audioFileStream!, UInt32(inDataByteSize), buf, AudioFileStreamParseFlags(rawValue: 0))
-    //        guard err == 0 else{
-    //            print("AudioFileStreamParseBytesError"+err.description)
-    //            return false
-    //        }
-    //        return true
-    //    }
+  
     
     let q = DispatchQueue.init(label: "1")
     
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         q.async {
-            
-            
-            
             switch eventCode {
             case Stream.Event.hasBytesAvailable:
                 if  let inputStream = aStream as? InputStream {
@@ -157,35 +88,8 @@ class streamAudio:StreamCreate {
                             }
                             
                         }else{
-                            
-                            //                        var err = OSStatus()
-                            //                        guard myData.started == true else{
-                            //                            return
-                            //                        }
-                            //                        err = streamAudio.MyEnqueueBuffer(&myData)
-                            //
-                            //                        print("flushing")
-                            //                        err = AudioQueueFlush(myData.audioQueue!)
-                            //                        guard err == 0 else {
-                            //                            print("AudioQueueFlushError")
-                            //                            return
-                            //                        }
-                            //
-                            //                        print("stopping")
-                            //                        err = AudioQueueStop(myData.audioQueue!, false)
-                            //                        guard err == 0 else {
-                            //                            print("AudioQueueStopError")
-                            //                            return
-                            //                        }
-                            //
-                            //                        print("waiting until finished playing..")
-                            //                        pthread_mutex_lock(&myData.mutex)
-                            //                        pthread_cond_wait(&myData.done, &myData.mutex)
-                            //                        pthread_mutex_unlock(&myData.mutex)
-                            //
-                            //                        err = AudioFileStreamClose(myData.audioFileStream!)
-                            //                        err = AudioQueueDispose(myData.audioQueue!, false)
-                            
+                            streamAudio.MyEnqueueBuffer(&self.myData)
+                            self.stop()
                             self.inputStream?.close()
                             self.outputStream?.close()
                         }
@@ -199,13 +103,12 @@ class streamAudio:StreamCreate {
     }
     
     
-    let MyPropertyListenerProc:AudioFileStream_PropertyListenerProc = { (inClientData, inAudioFileStream, inPropertyID, ioFlags) in
+    
         //this is called by audio file stream when it finds property values
+    let MyPropertyListenerProc:AudioFileStream_PropertyListenerProc = { (inClientData, inAudioFileStream, inPropertyID, ioFlags) in
         var myData = inClientData.assumingMemoryBound(to: MyData.self)
         var err:OSStatus = noErr
-        
         print("found property")
-        //        print(inPropertyID)
         switch (inPropertyID){
         case kAudioFileStreamProperty_ReadyToProducePackets:
             var asbd = AudioStreamBasicDescription()
@@ -260,8 +163,6 @@ class streamAudio:StreamCreate {
                 break
             }
             
-            
-            
             //listen for kaudioQueueProperty_IsRunning
             err = AudioQueueAddPropertyListener(myData.pointee.audioQueue!, kAudioQueueProperty_IsRunning, MyAudioQueueIsRunningCallback, myData)
             
@@ -300,22 +201,11 @@ class streamAudio:StreamCreate {
             //copy data to the audio queue buffer
             var fillBuf:AudioQueueBufferRef = myData.pointee.audioQueueBuffer[myData.pointee.fillBufferIndex]!
             
-            //            let distData = NSData.init(bytes: fillBuf.pointee.mAudioData, length: Int(packetSize))
-            
-            
-            
-            
             //swift下的参数内存无法访问,所以memcpy中的参数不能放倒swift变量中
-            //            let x = fillBuf.pointee.mAudioData + Int(myData.pointee.bytesFilled)
-            
-            
             memcpy(fillBuf.pointee.mAudioData + Int(myData.pointee.bytesFilled),inInputData + Int(packetOffset), Int(packetSize))
-            
-            
             
             myData.pointee.packetDescs[Int(myData.pointee.packetsFilled)] = inPacketDescriptions[i]
             myData.pointee.packetDescs[Int(myData.pointee.packetsFilled)].mStartOffset = Int64(myData.pointee.bytesFilled)
-            
             
             myData.pointee.bytesFilled += packetSize
             myData.pointee.packetsFilled += 1
@@ -337,9 +227,7 @@ class streamAudio:StreamCreate {
         var myData = inClientData!.assumingMemoryBound(to: MyData.self)
         
         var bufIndex = MyFindQueueBuffer(myData, inBuffer: inBuffer)
-        
-        
-        
+
         pthread_mutex_lock(&myData.pointee.mutex)
         myData.pointee.inuse[bufIndex] = false
         pthread_cond_signal(&myData.pointee.cond)
@@ -351,12 +239,10 @@ class streamAudio:StreamCreate {
         var running = UInt32()
         var size = UInt32()
         var err = AudioQueueGetProperty(inAQ, kAudioQueueProperty_IsRunning, &running, &size)
-        
         guard err == 0 else{
             print("AudioQueueGetPropertyError")
             return
         }
-        
         if (running == 0){
             pthread_mutex_lock(&myData.pointee.mutex)
             pthread_cond_signal(&myData.pointee.cond)
@@ -384,7 +270,6 @@ class streamAudio:StreamCreate {
         myData.pointee.inuse[myData.pointee.fillBufferIndex] = true
         
         let fillBuf = myData.pointee.audioQueueBuffer[myData.pointee.fillBufferIndex]!
-        
         fillBuf.pointee.mAudioDataByteSize = myData.pointee.bytesFilled
         
         err = AudioQueueEnqueueBuffer(myData.pointee.audioQueue!, fillBuf, myData.pointee.packetsFilled, myData.pointee.packetDescs)
@@ -394,8 +279,6 @@ class streamAudio:StreamCreate {
             return -1
         }
         err = StartQueueIfNeeded(myData)
-        
-        
         return err
     }
     
@@ -415,8 +298,6 @@ class streamAudio:StreamCreate {
     }
     
     static func WaitForFreeBuffer(_ myData:UnsafeMutablePointer<MyData>) {
-        
-        
         if (myData.pointee.fillBufferIndex+1 >= streamAudio.kNumAQBufs){
             myData.pointee.fillBufferIndex = 0
         }
@@ -432,47 +313,6 @@ class streamAudio:StreamCreate {
         print("<-unlock")
     }
     
-    
-    //    func MyConnectSocket()->Int{
-    //
-    //        let host = gethostbyname(defaultIp)
-    //
-    //        guard host != nil else{
-    //            print("can't get host")
-    //            return -1
-    //        }
-    //        connection_socket = Int(socket(AF_INET, SOCK_STREAM, 0))
-    //        guard connection_socket >= 0 else{
-    //            print("can't create socket")
-    //            return -1
-    //        }
-    //
-    //        var server_sockaddr = sockaddr_in()
-    //
-    //        server_sockaddr.sin_family = UInt8(host!.pointee.h_addrtype)
-    //        memcpy(&server_sockaddr.sin_addr.s_addr, host!.pointee.h_addr_list[0], Int(host!.pointee.h_length))
-    //
-    //        server_sockaddr.sin_port = defaultPort.bigEndian
-    //
-    //        let nsd = NSData.init(bytes: &server_sockaddr, length: MemoryLayout.size(ofValue: server_sockaddr))
-    //
-    //        let  c1 = nsd.bytes.assumingMemoryBound(to: sockaddr.self)
-    //
-    //        //        let c1 = exchange(point: &server_sockaddr)
-    //
-    //        let err = connect(Int32(connection_socket),c1,socklen_t(MemoryLayout.size(ofValue: server_sockaddr)))
-    //        guard err == 0 else {
-    //            print("connect error")
-    //            return -1
-    //        }
-    //
-    //        return Int(connection_socket)
-    //    }
-    
-    //    func exchange(point:UnsafeRawPointer) -> UnsafePointer<sockaddr> {
-    //        let x = point.bindMemory(to: sockaddr.self, capacity: MemoryLayout.size(ofValue: sockaddr()))
-    //        return x
-    //    }
     
     func stop() {
         
@@ -493,23 +333,40 @@ class streamAudio:StreamCreate {
         if err != 0  {
             print("AudioQueueStopError")
         }
-        
-        
+
         print("waiting until finished playing..")
-        //        pthread_mutex_lock(&myData.mutex)
-        //        pthread_cond_wait(&myData.done, &myData.mutex)
-        //        pthread_mutex_unlock(&myData.mutex)
-        
-        //        err = AudioQueueDispose(myData.audioQueue!, true)
-        //        print("AudioQueueDisposeError"+err.description)
-        //        
-        //        err = AudioFileStreamClose(myData.audioFileStream!)
-        //        print("AudioFileStreamCloseError"+err.description)    
-        
+
         self.inputStream?.close()
         self.outputStream?.close()
     }
     
+    func disposeAudioQueue() {
+        var err = OSStatus()
+        guard myData.started == true else{
+            return
+        }
+        
+        print("flushing")
+        err = AudioQueueFlush(myData.audioQueue!)
+        guard err == 0 else {
+            print("AudioQueueFlushError")
+            return
+        }
+        
+        print("stopping")
+        err = AudioQueueStop(myData.audioQueue!, false)
+        guard err == 0 else {
+            print("AudioQueueStopError")
+            return
+        }
+        print("waiting until finished playing..")
+        pthread_mutex_lock(&myData.mutex)
+        pthread_cond_wait(&myData.done, &myData.mutex)
+        pthread_mutex_unlock(&myData.mutex)
+        
+        err = AudioFileStreamClose(myData.audioFileStream!)
+        err = AudioQueueDispose(myData.audioQueue!, false)
+    }
     
     
 }

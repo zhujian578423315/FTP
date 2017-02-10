@@ -16,7 +16,7 @@ class TableViewController: UITableViewController,loginDelegate {
     }
     @IBAction func home(_ sender: UIBarButtonItem) {
         if !homeOrNot {
-            ftp.ipAddress = "115.159.28.14" as CFString
+            ftp.ipAddress = "115.159.28.44" as CFString
             ftp.Port = 21
             ftp.fileAndDictionary = nil
             self.navigationItem.title = "Company"
