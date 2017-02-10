@@ -76,11 +76,19 @@
 				EED695881E0CEEBA00D98319 /* TableViewController.swift */,
 				EE92734A1E11614500E80BAD /* SortModel.swift */,
 				EE8A526C1DED154900C9EF63 /* Main.storyboard */,
-				EE8A80561E4AE604001FC1D8 /* streamAudio.swift */,
+				EE9059391E4D6FB800C55E5D /* AudioModel */,
 				EED695831E0B6FD600D98319 /* FTP Model */,
 				EED6958A1E0CEECD00D98319 /* Supporting */,
 			);
 			path = FTP;
+			sourceTree = "<group>";
+		};
+		EE9059391E4D6FB800C55E5D /* AudioModel */ = {
+			isa = PBXGroup;
+			children = (
+				EE8A80561E4AE604001FC1D8 /* streamAudio.swift */,
+			);
+			name = AudioModel;
 			sourceTree = "<group>";
 		};
 		EED695831E0B6FD600D98319 /* FTP Model */ = {

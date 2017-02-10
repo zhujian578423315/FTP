@@ -9,110 +9,194 @@
 import Foundation
 import AudioToolbox
 
-class streamAudio {
+public  class MyData{
+    var audioFileStream:AudioFileStreamID? = nil
+    var audioQueue:AudioQueueRef? = nil
+    var audioQueueBuffer = Array.init(repeating: AudioQueueBufferRef.init(bitPattern:MemoryLayout.size(ofValue: AudioQueueBuffer.self)), count: 3)
+    var packetDescs = Array.init(repeating: AudioStreamPacketDescription(), count: streamAudio.kAQMaxPacketDescs)
+    var fillBufferIndex:Int = 0
+    var bytesFilled:UInt32 = 0
+    var packetsFilled:UInt32 = 0
+    var inuse = Array.init(repeating: false, count: streamAudio.kNumAQBufs)
+    var started:Bool = false
+    var failed:Bool = false
+    var mutex = pthread_mutex_t()
+    var cond = pthread_cond_t()
+    var done = pthread_cond_t()
+}
+
+
+class streamAudio:StreamCreate {
     static  let kNumAQBufs = 3
     static  let kAQBufSize:UInt32 = 128 * 1024
     static  let kAQMaxPacketDescs = 512
+    
     let kRecvBufSize = 40000
     var connection_socket:Int = 0
-    var defaultIp = "127.0.0.1"
+    var defaultIp = "127.0.0.1" as CFString
     var defaultPort:in_port_t = 51515
+    var RecvdCompleted = false
     
-    public  class MyData{
-        var audioFileStream:AudioFileStreamID? = nil
-        var audioQueue:AudioQueueRef? = nil
-        var audioQueueBuffer = Array.init(repeating: AudioQueueBufferRef.init(bitPattern:MemoryLayout.size(ofValue: AudioQueueBuffer.self)), count: 3)
-        var packetDescs = Array.init(repeating: AudioStreamPacketDescription(), count: kAQMaxPacketDescs)
-        var fillBufferIndex:Int = 0
-        var bytesFilled:UInt32 = 0
-        var packetsFilled:UInt32 = 0
-        var inuse = Array.init(repeating: false, count: streamAudio.kNumAQBufs)
-        var started:Bool = false
-        var failed:Bool = false
-        var mutex = pthread_mutex_t()
-        var cond = pthread_cond_t()
-        var done = pthread_cond_t()
-    }
     var myData = MyData()
-    func mainStart(ip:String,Port:UInt32)  {
+    
+    func mainStart(ip:CFString,Port:UInt32)  {
         defaultIp = ip
         defaultPort = in_port_t(Port)
         
-        
+        while kAudioQueueProperty_IsRunning == 0{
+            continue
+        }
         
         myData = MyData()
-
+        
         pthread_mutex_init(&myData.mutex, nil)
-        pthread_cond_init(&myData.cond, nil);
-        pthread_cond_init(&myData.done, nil);
-        var buf = Array.init(repeating: Int8(), count: kRecvBufSize)
+        pthread_cond_init(&myData.cond, nil)
+        pthread_cond_init(&myData.done, nil)
+        
+        //        let q = DispatchQueue.init(label: "1")
+        DispatchQueue.main.async {
+            self.connect(serverAddress: self.defaultIp, serverPort: UInt32(self.defaultPort))
+        }
+        
         
         //connect socket
-        let connection_socket = MyConnectSocket()
-        
-        guard connection_socket >= 0 else{
-            print("connectfaild")
-            return
-        }
-        print("connected")
-        
-        
+        //        let connection_socket = MyConnectSocket()
+        //        guard connection_socket > 0 else{
+        //            print("connectfaild")
+        //            return
+        //        }
+        //        print("connected")
         
         var err = AudioFileStreamOpen(&myData, MyPropertyListenerProc, MyPacketsProc,kAudioFileAAC_ADTSType, &myData.audioFileStream)
-        
         guard err == 0 && myData.audioFileStream != nil else{
             print("AudioFileStreamOpenError")
             return
         }
         
+        //            var buf = Array.init(repeating: Int8(), count: kRecvBufSize)
+        //        while !myData.failed {
+        //            print("receive")
+        //            let bytesRecvd = recv(Int32(connection_socket), &buf, kRecvBufSize, 0)
+        //            print("bytesRecvd:"+bytesRecvd.description)
+        //            guard bytesRecvd > 0 else{
+        //                print("RecvdComplete!")
+        //                break
+        //            }
+        //            let err = AudioFileStreamParseBytes(myData.audioFileStream!, UInt32(bytesRecvd), buf, AudioFileStreamParseFlags(rawValue: 0))
+        //            guard err == 0 else{
+        //                print("AudioFileStreamParseBytesError"+err.description)
+        //                break
+        //            }
         
-        while !myData.failed {
-//            print("receive")
-            let bytesRecvd = recv(Int32(connection_socket), &buf, kRecvBufSize, 0)
-//            print("bytesRecvd:"+bytesRecvd.description)
-            
-            guard bytesRecvd > 0 else{
-                print("RecvdComplete!")
-                break
-            }
-            
-            let err = AudioFileStreamParseBytes(myData.audioFileStream!, UInt32(bytesRecvd), buf, AudioFileStreamParseFlags(rawValue: 0))
-            guard err == 0 else{
-                print("AudioFileStreamParseBytesError")
-                break
-            }
-        }
+        //        }
         
-        streamAudio.MyEnqueueBuffer(&myData)
-        //        MyEnqueueBuffer(myData: myData)
         
-        print("flushing")
-        err = AudioQueueFlush(myData.audioQueue!)
-        guard err == 0 else {
-            print("AudioQueueFlushError")
-            //            free(&buf)
-            return
-        }
         
-        print("stopping")
-        err = AudioQueueStop(myData.audioQueue!, false)
-        guard err == 0 else {
-            print("AudioQueueStopError")
-            //            free(&buf)
-            return
-        }
         
-        print("waiting until finished playing..")
-        pthread_mutex_lock(&myData.mutex)
-        pthread_cond_wait(&myData.done, &myData.mutex)
-        pthread_mutex_unlock(&myData.mutex)
-        
-        err = AudioFileStreamClose(myData.audioFileStream!)
-        err = AudioQueueDispose(myData.audioQueue!, false)
-        close(Int32(connection_socket))
+        //        guard myData.started == true else{
+        //            return
+        //        }
+        //
+        //        err = streamAudio.MyEnqueueBuffer(&myData)
+        //
+        //        print("flushing")
+        //        err = AudioQueueFlush(myData.audioQueue!)
+        //        guard err == 0 else {
+        //            print("AudioQueueFlushError")
+        //            return
+        //        }
+        //
+        //        print("stopping")
+        //        err = AudioQueueStop(myData.audioQueue!, false)
+        //        guard err == 0 else {
+        //            print("AudioQueueStopError")
+        //            return
+        //        }
+        //
+        //        print("waiting until finished playing..")
+        //        pthread_mutex_lock(&myData.mutex)
+        //        pthread_cond_wait(&myData.done, &myData.mutex)
+        //        pthread_mutex_unlock(&myData.mutex)
+        //
+        //        err = AudioFileStreamClose(myData.audioFileStream!)
+        //        err = AudioQueueDispose(myData.audioQueue!, false)
+        //        close(Int32(connection_socket))
     }
     
+    //    func streamDataReceive(inDataByteSize:UInt32,buf:[Int8])->Bool  {
+    //        print("receive")
+    //        let err = AudioFileStreamParseBytes(myData.audioFileStream!, UInt32(inDataByteSize), buf, AudioFileStreamParseFlags(rawValue: 0))
+    //        guard err == 0 else{
+    //            print("AudioFileStreamParseBytesError"+err.description)
+    //            return false
+    //        }
+    //        return true
+    //    }
     
+    let q = DispatchQueue.init(label: "1")
+    
+    func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
+        q.async {
+            
+            
+            
+            switch eventCode {
+            case Stream.Event.hasBytesAvailable:
+                if  let inputStream = aStream as? InputStream {
+                    let bufferSize = 40000
+                    var buffer = Array.init(repeating: UInt8(),count: bufferSize)
+                    while (inputStream.hasBytesAvailable){
+                        //将接收到的内容放到buffer里面
+                        let len = inputStream.read(&buffer, maxLength: bufferSize)
+                        if(len > 0){
+                            print("receive")
+                            let err = AudioFileStreamParseBytes(self.myData.audioFileStream!, UInt32(len), buffer, AudioFileStreamParseFlags(rawValue: 0))
+                            guard err == 0 else{
+                                print("AudioFileStreamParseBytesError"+err.description)
+                                return
+                            }
+                            
+                        }else{
+                            
+                            //                        var err = OSStatus()
+                            //                        guard myData.started == true else{
+                            //                            return
+                            //                        }
+                            //                        err = streamAudio.MyEnqueueBuffer(&myData)
+                            //
+                            //                        print("flushing")
+                            //                        err = AudioQueueFlush(myData.audioQueue!)
+                            //                        guard err == 0 else {
+                            //                            print("AudioQueueFlushError")
+                            //                            return
+                            //                        }
+                            //
+                            //                        print("stopping")
+                            //                        err = AudioQueueStop(myData.audioQueue!, false)
+                            //                        guard err == 0 else {
+                            //                            print("AudioQueueStopError")
+                            //                            return
+                            //                        }
+                            //
+                            //                        print("waiting until finished playing..")
+                            //                        pthread_mutex_lock(&myData.mutex)
+                            //                        pthread_cond_wait(&myData.done, &myData.mutex)
+                            //                        pthread_mutex_unlock(&myData.mutex)
+                            //
+                            //                        err = AudioFileStreamClose(myData.audioFileStream!)
+                            //                        err = AudioQueueDispose(myData.audioQueue!, false)
+                            
+                            self.inputStream?.close()
+                            self.outputStream?.close()
+                        }
+                        
+                    }
+                }
+                
+            default:break
+            }
+        }
+    }
     
     
     let MyPropertyListenerProc:AudioFileStream_PropertyListenerProc = { (inClientData, inAudioFileStream, inPropertyID, ioFlags) in
@@ -124,7 +208,6 @@ class streamAudio {
         //        print(inPropertyID)
         switch (inPropertyID){
         case kAudioFileStreamProperty_ReadyToProducePackets:
-            print("***********")
             var asbd = AudioStreamBasicDescription()
             var asbdSize = UInt32(MemoryLayout.size(ofValue: asbd.self))
             
@@ -139,7 +222,7 @@ class streamAudio {
             err = AudioQueueNewOutput(&asbd, MyAudioQueueOutputCallback, myData, nil, nil, 0, &myData.pointee.audioQueue)
             
             guard err == 0 else{
-                print("AudioQueueNewOutputError")
+                print("AudioQueueNewOutputError"+err.description)
                 return
             }
             
@@ -195,10 +278,11 @@ class streamAudio {
     
     
     let MyPacketsProc:AudioFileStream_PacketsProc = { (inClientData,inNumberBytes, inNumberPackets, inInputData, inPacketDescriptions) in
+        var err = OSStatus()
         //this is called by audio file stream when it finds packets of audio
         var myData = inClientData.assumingMemoryBound(to: MyData.self)
         var str = "got data:"+inNumberBytes.description+" packets:"+inNumberPackets.description
-//        print(str)
+        print(str)
         
         //the following code assumes wa're streaming VBR data. for CBR data, you'd need another code branch here
         for i in 0..<Int(inNumberPackets){
@@ -208,9 +292,11 @@ class streamAudio {
             var bufSpaceRemaining = kAQBufSize - myData.pointee.bytesFilled
             
             if (bufSpaceRemaining < packetSize){
-                streamAudio.MyEnqueueBuffer(myData)
+                err =  streamAudio.MyEnqueueBuffer(myData)
                 streamAudio.WaitForFreeBuffer(myData)
             }
+            
+            
             //copy data to the audio queue buffer
             var fillBuf:AudioQueueBufferRef = myData.pointee.audioQueueBuffer[myData.pointee.fillBufferIndex]!
             
@@ -220,7 +306,7 @@ class streamAudio {
             
             
             //swift下的参数内存无法访问,所以memcpy中的参数不能放倒swift变量中
-            let x = fillBuf.pointee.mAudioData + Int(myData.pointee.bytesFilled)
+            //            let x = fillBuf.pointee.mAudioData + Int(myData.pointee.bytesFilled)
             
             
             memcpy(fillBuf.pointee.mAudioData + Int(myData.pointee.bytesFilled),inInputData + Int(packetOffset), Int(packetSize))
@@ -236,7 +322,7 @@ class streamAudio {
             
             var packetsDescsRemaining = streamAudio.kAQMaxPacketDescs - Int(myData.pointee.packetsFilled)
             if packetsDescsRemaining == 0{
-                streamAudio.MyEnqueueBuffer(myData)
+                err = streamAudio.MyEnqueueBuffer(myData)
                 streamAudio.WaitForFreeBuffer(myData)
             }
         }
@@ -265,6 +351,7 @@ class streamAudio {
         var running = UInt32()
         var size = UInt32()
         var err = AudioQueueGetProperty(inAQ, kAudioQueueProperty_IsRunning, &running, &size)
+        
         guard err == 0 else{
             print("AudioQueueGetPropertyError")
             return
@@ -298,8 +385,6 @@ class streamAudio {
         
         let fillBuf = myData.pointee.audioQueueBuffer[myData.pointee.fillBufferIndex]!
         
-        //    print(fillBuf.pointee.mAudioData.assumingMemoryBound(to: NSData.self).pointee)
-        //        myData.pointee.bytesFilled = 130821
         fillBuf.pointee.mAudioDataByteSize = myData.pointee.bytesFilled
         
         err = AudioQueueEnqueueBuffer(myData.pointee.audioQueue!, fillBuf, myData.pointee.packetsFilled, myData.pointee.packetDescs)
@@ -308,7 +393,7 @@ class streamAudio {
             print("AudioQueueEnqueueBufferError")
             return -1
         }
-        StartQueueIfNeeded(myData)
+        err = StartQueueIfNeeded(myData)
         
         
         return err
@@ -323,7 +408,7 @@ class streamAudio {
                 print("started")
             }else{
                 myData.pointee.failed = true
-                print("AudioQueueStartError")
+                print("AudioQueueStartError"+err.description)
             }
         }
         return err
@@ -348,41 +433,41 @@ class streamAudio {
     }
     
     
-    func MyConnectSocket()->Int{
-        
-        let host = gethostbyname(defaultIp)
-        
-        guard host != nil else{
-            print("can't get host")
-            return -1
-        }
-        connection_socket = Int(socket(AF_INET, SOCK_STREAM, 0))
-        guard connection_socket >= 0 else{
-            print("can't create socket")
-            return -1
-        }
-        
-        var server_sockaddr = sockaddr_in()
-        
-        server_sockaddr.sin_family = UInt8(host!.pointee.h_addrtype)
-        memcpy(&server_sockaddr.sin_addr.s_addr, host!.pointee.h_addr_list[0], Int(host!.pointee.h_length))
-        
-        server_sockaddr.sin_port = defaultPort.bigEndian
-        
-        let nsd = NSData.init(bytes: &server_sockaddr, length: MemoryLayout.size(ofValue: server_sockaddr))
-        
-        let  c1 = nsd.bytes.assumingMemoryBound(to: sockaddr.self)
-        
-        //        let c1 = exchange(point: &server_sockaddr)
-        
-        let err = connect(Int32(connection_socket),c1,socklen_t(MemoryLayout.size(ofValue: server_sockaddr)))
-        guard err == 0 else {
-            print("connect error")
-            return -1
-        }
-        
-        return Int(connection_socket)
-    }
+    //    func MyConnectSocket()->Int{
+    //
+    //        let host = gethostbyname(defaultIp)
+    //
+    //        guard host != nil else{
+    //            print("can't get host")
+    //            return -1
+    //        }
+    //        connection_socket = Int(socket(AF_INET, SOCK_STREAM, 0))
+    //        guard connection_socket >= 0 else{
+    //            print("can't create socket")
+    //            return -1
+    //        }
+    //
+    //        var server_sockaddr = sockaddr_in()
+    //
+    //        server_sockaddr.sin_family = UInt8(host!.pointee.h_addrtype)
+    //        memcpy(&server_sockaddr.sin_addr.s_addr, host!.pointee.h_addr_list[0], Int(host!.pointee.h_length))
+    //
+    //        server_sockaddr.sin_port = defaultPort.bigEndian
+    //
+    //        let nsd = NSData.init(bytes: &server_sockaddr, length: MemoryLayout.size(ofValue: server_sockaddr))
+    //
+    //        let  c1 = nsd.bytes.assumingMemoryBound(to: sockaddr.self)
+    //
+    //        //        let c1 = exchange(point: &server_sockaddr)
+    //
+    //        let err = connect(Int32(connection_socket),c1,socklen_t(MemoryLayout.size(ofValue: server_sockaddr)))
+    //        guard err == 0 else {
+    //            print("connect error")
+    //            return -1
+    //        }
+    //
+    //        return Int(connection_socket)
+    //    }
     
     //    func exchange(point:UnsafeRawPointer) -> UnsafePointer<sockaddr> {
     //        let x = point.bindMemory(to: sockaddr.self, capacity: MemoryLayout.size(ofValue: sockaddr()))
@@ -390,13 +475,13 @@ class streamAudio {
     //    }
     
     func stop() {
-
+        
         var err:OSStatus
         guard myData.started == true else{
             print("无法暂停")
             return
         }
-
+        
         print("flushing")
         err = AudioQueueFlush(myData.audioQueue!)
         if err != 0  {
@@ -411,16 +496,18 @@ class streamAudio {
         
         
         print("waiting until finished playing..")
-        pthread_mutex_lock(&myData.mutex)
-        pthread_cond_wait(&myData.done, &myData.mutex)
-        pthread_mutex_unlock(&myData.mutex)
-        err = AudioFileStreamClose(myData.audioFileStream!)
-        print("AudioFileStreamCloseError"+err.description)
-        err = AudioQueueDispose(myData.audioQueue!, true)
-        print("AudioQueueDisposeError"+err.description)
-//        close(Int32(connection_socket))
-        myData = MyData()
+        //        pthread_mutex_lock(&myData.mutex)
+        //        pthread_cond_wait(&myData.done, &myData.mutex)
+        //        pthread_mutex_unlock(&myData.mutex)
         
+        //        err = AudioQueueDispose(myData.audioQueue!, true)
+        //        print("AudioQueueDisposeError"+err.description)
+        //        
+        //        err = AudioFileStreamClose(myData.audioFileStream!)
+        //        print("AudioFileStreamCloseError"+err.description)    
+        
+        self.inputStream?.close()
+        self.outputStream?.close()
     }
     
     

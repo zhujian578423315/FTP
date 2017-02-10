@@ -16,7 +16,7 @@ class TableViewController: UITableViewController,loginDelegate {
     }
     @IBAction func home(_ sender: UIBarButtonItem) {
         if !homeOrNot {
-            ftp.ipAddress = "115.159.28.44" as CFString
+            ftp.ipAddress = "115.159.28.14" as CFString
             ftp.Port = 21
             ftp.fileAndDictionary = nil
             self.navigationItem.title = "Company"
@@ -29,6 +29,12 @@ class TableViewController: UITableViewController,loginDelegate {
             ftp.login()
             homeOrNot = false
         }
+//       let q = DispatchQueue.init(label: "q")
+//        q.async {
+//                self.ftp.x.stop()
+//        }
+    
+        
     }
     
     @IBOutlet var ishome: UIBarButtonItem!
@@ -86,17 +92,12 @@ class TableViewController: UITableViewController,loginDelegate {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        if ftp.x.myData.started{
-//            print(ftp.x.myData.started)
-//        let q = DispatchQueue.init(label: "1")
-//        q.async {
-//            self.ftp.x.stop()
-//        }
-//        }
+        
         if ftp.fileAndDictionary != nil{
             if ftp.fileAndDictionary![indexPath.row][0].contains("d"){
                 ftp.ListFile(path: ftp.fileAndDictionary![indexPath.row][8])
             }else{
+                ftp.x.stop()
                 ftp.DownloadFile(path: ftp.currentPath, name: ftp.fileAndDictionary![indexPath.row][8])
             }
         }

@@ -79,13 +79,15 @@ class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDa
             x += commands
             commands = x
         }
-                isMessage = true
+       isMessage = true
     }
     
     let x = streamAudio()
-    let q = DispatchQueue.init(label: "q")
+
     //建立数据链接
     private  func DataStreamConnect(dataPort: UInt32) {
+        
+         close(Int32(x.connection_socket))
         
         if delegate != nil{
             if isMessage{
@@ -94,9 +96,13 @@ class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDa
             }else{
                 // dataStream.connect(serverAddress: ipAddress, serverPort: dataPort)
 //                print("接收数据")
+                let q = DispatchQueue.init(label: "1")
+                
                 q.async {
+                    
                     self.isMessage = true
-                    self.x.mainStart(ip: self.ipAddress as String, Port: dataPort)
+                    self.x.mainStart(ip: self.ipAddress, Port: dataPort)
+//                    self.x.connect(serverAddress: self.ipAddress, serverPort: dataPort)
                 //由于ftp只有一个数据端口，所以有一个对象占用时，其他的对象无法访问！！
                 }
                 
@@ -203,12 +209,14 @@ class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDa
     private  func commandQueue()  {
         print(commands)
         if !commands.isEmpty{
-            if controllerStream.outputStream?.streamStatus.rawValue == 2 && Rcode != 421{
+            if controllerStream.outputStream?.streamStatus.rawValue == 2 && Rcode != 421 && controllerStream.inputStream?.streamStatus.rawValue == 2{
                 let command = commands.removeFirst()
                 controllerStream.SentCommand(command: command, withOutputStream: controllerStream.outputStream!)
             }else{
+                print("OutputStream状态"+(controllerStream.outputStream?.streamStatus.rawValue.description)!)
+                print("inputStream状态"+(controllerStream.inputStream?.streamStatus.rawValue.description)!)
                 print("outPutStream不在打开状态，无法发出命令")
-                needLogin()
+                needLogin() 
             }
         }
     }
@@ -225,15 +233,9 @@ class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDa
         
     }
     
-    
+
     func DownloadFile(path:String,name:String)  {
         //dataStream写入的时候不再发出命令
-                close(Int32(x.connection_socket))
-        let q = DispatchQueue.init(label: "1")
-                q.async {
-                self.x.stop()
-                }
-        
         if dataStream.inputStream?.streamStatus.rawValue != 2{
             let RETR = "RETR "+name
             let SIZE = "SIZE "+name
