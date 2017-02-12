@@ -28,10 +28,10 @@ class ControllerStream: StreamCreate {
         
         
             let buffer:[UInt8] = Array.init(command.utf8)
-        queue.async {
+//        queue.async {
             let x =  withOutputStream.write(buffer, maxLength: buffer.count)
             print("已发送命令："+command)
-        }
+//        }
         
         
     }
@@ -39,6 +39,7 @@ class ControllerStream: StreamCreate {
     
     
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
+        queue.async {
         switch eventCode {
 //        case Stream.Event.openCompleted:
 //            print(aStream.description+"控制流打开成功")
@@ -59,7 +60,10 @@ class ControllerStream: StreamCreate {
                         
                         if x != nil{
                             print("ControllerStreamSay:"+x!)
-                            delegate?.handleWithControllerStreamMessage(message: x!)
+                            DispatchQueue.main.async {
+                                 self.delegate?.handleWithControllerStreamMessage(message: x!)
+                            }
+                           
                         }
                     }
                 }
@@ -75,7 +79,7 @@ class ControllerStream: StreamCreate {
 //            print("控制流结束")
         default:break
         }
-        
+        }
     }
     
 }

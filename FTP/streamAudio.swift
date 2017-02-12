@@ -89,7 +89,7 @@ class streamAudio:StreamCreate {
                             
                         }else{
                             streamAudio.MyEnqueueBuffer(&self.myData)
-                            self.stop()
+                            self.autoStop()
                             self.inputStream?.close()
                             self.outputStream?.close()
                         }
@@ -322,11 +322,11 @@ class streamAudio:StreamCreate {
             return
         }
         
-        print("flushing")
-        err = AudioQueueFlush(myData.audioQueue!)
-        if err != 0  {
-            print("AudioQueueFlushError")
-        }
+//        print("flushing")
+//        err = AudioQueueFlush(myData.audioQueue!)
+//        if err != 0  {
+//            print("AudioQueueFlushError")
+//        }
         
         print("stopping")
         err = AudioQueueStop(myData.audioQueue!, true)
@@ -338,6 +338,34 @@ class streamAudio:StreamCreate {
 
         self.inputStream?.close()
         self.outputStream?.close()
+    }
+    
+    func autoStop() {
+        var err = OSStatus()
+        guard myData.started == true else{
+            return
+        }
+        
+        print("flushing")
+        err = AudioQueueFlush(myData.audioQueue!)
+        guard err == 0 else {
+            print("AudioQueueFlushError")
+            return
+        }
+        
+        print("stopping")
+        err = AudioQueueStop(myData.audioQueue!, false)
+        guard err == 0 else {
+            print("AudioQueueStopError")
+            return
+        }
+        print("waiting until finished playing..")
+//        pthread_mutex_lock(&myData.mutex)
+//        pthread_cond_wait(&myData.done, &myData.mutex)
+//        pthread_mutex_unlock(&myData.mutex)
+        
+    
+
     }
     
     func disposeAudioQueue() {

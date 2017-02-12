@@ -65,7 +65,7 @@ class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDa
         dataStream.delegate = self
         if delegate != nil{
             controllerStream.connect(serverAddress: ipAddress, serverPort: Port)
-            commands = ["USER "+username,"PASS "+password,"OPTS UTF8 ON","PASV","LIST"]
+            commands = ["USER "+username,"PASS "+password,"OPTS UTF8 ON","TYPE IMAGE","PASV","LIST"]
         }
                 isMessage = true
         
@@ -75,11 +75,28 @@ class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDa
         print("需要重新登录")
         if delegate != nil{
             controllerStream.connect(serverAddress: ipAddress, serverPort: Port)
-            var x = ["USER "+username,"PASS "+password,"OPTS UTF8 ON"]
+            var x = ["USER "+username,"PASS "+password,"OPTS UTF8 ON","TYPE IMAGE","CWD "+currentPath]
             x += commands
             commands = x
         }
-       isMessage = true
+//       isMessage = true
+    }
+    
+    
+    func controlStreamLogout() {
+        controllerStream.SentCommand(command: "QUIT", withOutputStream: controllerStream.outputStream!)
+        
+        if controllerStream.inputStream != nil{
+            controllerStream.inputStream?.close()
+        }
+        if controllerStream.outputStream != nil{
+            controllerStream.outputStream?.close()
+        }
+        
+//        var condition = controllerStream.inputStream?.streamStatus.rawValue
+//        while condition != 0 {
+//            condition = controllerStream.inputStream?.streamStatus.rawValue
+//        }
     }
     
     let x = streamAudio()
@@ -87,7 +104,7 @@ class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDa
     //建立数据链接
     private  func DataStreamConnect(dataPort: UInt32) {
         
-         close(Int32(x.connection_socket))
+//         close(Int32(x.connection_socket))
         
         if delegate != nil{
             if isMessage{
@@ -209,7 +226,7 @@ class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDa
     private  func commandQueue()  {
         print(commands)
         if !commands.isEmpty{
-            if controllerStream.outputStream?.streamStatus.rawValue == 2 && Rcode != 421 && controllerStream.inputStream?.streamStatus.rawValue == 2{
+            if controllerStream.outputStream?.streamStatus.rawValue == 2  {
                 let command = commands.removeFirst()
                 controllerStream.SentCommand(command: command, withOutputStream: controllerStream.outputStream!)
             }else{
@@ -233,6 +250,7 @@ class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDa
         
     }
     
+    
 
     func DownloadFile(path:String,name:String)  {
         //dataStream写入的时候不再发出命令
@@ -251,12 +269,12 @@ class FTPModel:NSObject,controllerStreamDelegate,listStreamDelegate,dataStreamDa
     
     //退回上一目录
     func Back()  {
-        if dataStream.inputStream?.streamStatus.rawValue != 2{
+//        if dataStream.inputStream?.streamStatus.rawValue != 2{
             commands = ["CDUP","PWD","PASV","LIST"]
             commandQueue()
-        }else{
-            print("无法返回，请稍后尝试")
-        }
+//        }else{
+//            print("无法返回，请稍后尝试")
+//        }
     }
     
     //上传文件
